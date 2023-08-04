@@ -223,12 +223,12 @@
 ## Step 3 - カスタム ポリシー ファイルをアップロードする
 
 1. Azure portal にサインインします。
-2. ご利用の Azure AD B2C テナントが含まれるディレクトリを必ず使用してください。
-  - a. ポータル ツールバーの [Directories + subscriptions](ディレクトリ + サブスクリプション) アイコンを選択します。
-  - b. [ポータルの設定] | [Directories + subscriptions](ディレクトリ + サブスクリプション) ページの [ディレクトリ名] の一覧で自分の Azure AD B2C ディレクトリを見つけて、 [切り替え] を選択します。
-3. Azure portal で、 [Azure AD B2C] を検索して選択します。
-4. 左側のメニューの [ポリシー] で、[Identity Experience Framework] を選択します。
-5. [カスタム ポリシーのアップロード] を選択し、参照して選択し、ContosoCustomPolicy.XML ファイルをアップロードします。
+1. ご利用の Azure AD B2C テナントが含まれるディレクトリを必ず使用してください。
+    1. ポータル ツールバーの [Directories + subscriptions](ディレクトリ + サブスクリプション) アイコンを選択します。
+    1. [ポータルの設定] | [Directories + subscriptions](ディレクトリ + サブスクリプション) ページの [ディレクトリ名] の一覧で自分の Azure AD B2C ディレクトリを見つけて、 [切り替え] を選択します。
+1. Azure portal で、 [Azure AD B2C] を検索して選択します。
+1. 左側のメニューの [ポリシー] で、[Identity Experience Framework] を選択します。
+1. [カスタム ポリシーのアップロード] を選択し、参照して選択し、ContosoCustomPolicy.XML ファイルをアップロードします。
 
 
 ファイルをアップロードすると、Azure AD B2C によって プレフィックス B2C_1A_ が追加されるため、名前は B2C_1A_CONTOSOCUSTOMPOLICY のようになります
