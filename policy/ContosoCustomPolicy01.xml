@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    <TrustFrameworkPolicy
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+      xmlns="http://schemas.microsoft.com/online/cpim/schemas/2013/06"
+      PolicySchemaVersion="0.3.0.0"
+      TenantId="yourtenant.onmicrosoft.com"
+      PolicyId="B2C_1A_ContosoCustomPolicy"
+      PublicPolicyUri="http://yourtenant.onmicrosoft.com/B2C_1A_ContosoCustomPolicy">
+
+        <BuildingBlocks>
+            <!-- Building Blocks Here-->
+            <ClaimsSchema>
+                <ClaimType Id="objectId">
+                    <DisplayName>unique object Id for subject of the claims being returned</DisplayName>
+                    <DataType>string</DataType>
+                </ClaimType>        
+                <ClaimType Id="message">
+                    <DisplayName>Will hold Hello World message</DisplayName>
+                    <DataType>string</DataType>
+                </ClaimType>
+            </ClaimsSchema>
+        </BuildingBlocks>
+
+        <ClaimsProviders>
+            <!-- Claims Providers Here-->
+
+                <ClaimsProvider>
+                    <DisplayName>Token Issuer</DisplayName>
+                    <TechnicalProfiles>
+                        <TechnicalProfile Id="JwtIssuer">
+                        <DisplayName>JWT Issuer</DisplayName>
+                        <Protocol Name="None" />
+                        <OutputTokenFormat>JWT</OutputTokenFormat>
+                        <Metadata>
+                            <Item Key="client_id">{service:te}</Item>
+                            <Item Key="issuer_refresh_token_user_identity_claim_type">objectId</Item>
+                            <Item Key="SendTokenResponseBodyWithJsonNumbers">true</Item>
+                        </Metadata>
+                        <CryptographicKeys>
+                            <Key Id="issuer_secret" StorageReferenceId="B2C_1A_TokenSigningKeyContainer" />
+                            <Key Id="issuer_refresh_token_key" StorageReferenceId="B2C_1A_TokenEncryptionKeyContainer" />
+                        </CryptographicKeys>
+                        </TechnicalProfile>
+                    </TechnicalProfiles>
+                    </ClaimsProvider>
+
+                    <ClaimsProvider>
+                    <!-- The technical profile(s) defined in this section is required by the framework to be included in all custom policies. -->
+                    <DisplayName>Trustframework Policy Engine TechnicalProfiles</DisplayName>
+                    <TechnicalProfiles>
+                        <TechnicalProfile Id="TpEngine_c3bd4fe2-1775-4013-b91d-35f16d377d13">
+                        <DisplayName>Trustframework Policy Engine Default Technical Profile</DisplayName>
+                        <Protocol Name="None" />
+                        <Metadata>
+                            <Item Key="url">{service:te}</Item>
+                        </Metadata>
+                        </TechnicalProfile>
+                    </TechnicalProfiles>
+                </ClaimsProvider>
+        </ClaimsProviders>
+
+        <UserJourneys>
+            <!-- User Journeys Here-->
+            <UserJourney Id="HelloWorldJourney">
+                <OrchestrationSteps>
+                <OrchestrationStep Order="1" Type="SendClaims" CpimIssuerTechnicalProfileReferenceId="JwtIssuer" />
+                </OrchestrationSteps>
+            </UserJourney>
+        </UserJourneys>
+
+        <RelyingParty>
+            <!-- 
+                Relying Party Here that's your policy’s entry point
+                Specify the User Journey to execute 
+                Specify the claims to include in the token that is returned when the policy runs
+            -->
+
+        <DefaultUserJourney ReferenceId="HelloWorldJourney"/>
+        <TechnicalProfile Id="HelloWorldPolicyProfile">
+            <DisplayName>Hello World Policy Profile</DisplayName>
+            <Protocol Name="OpenIdConnect" />
+            <OutputClaims>
+            <OutputClaim ClaimTypeReferenceId="objectId" PartnerClaimType="sub" DefaultValue="abcd-1234-efgh-5678-ijkl-etc."/>
+            <OutputClaim ClaimTypeReferenceId="message" DefaultValue="Hello World!"/>
+            </OutputClaims>
+            <SubjectNamingInfo ClaimType="sub" />
+        </TechnicalProfile>
+
+        </RelyingParty>
+    </TrustFrameworkPolicy>
