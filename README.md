@@ -1,24 +1,10 @@
----
-title: Write your first Azure AD B2C custom policy - Hello World! 
-titleSuffix: Azure AD B2C
-description: Learn how to write your first custom policy. A custom that shows of returns Hello World message. 
-services: active-directory-b2c
-author: kengaderdus
-manager: CelesteDG
 
-ms.service: active-directory
-ms.workload: identity
-ms.topic: how-to
-ms.custom: b2c-docs-improvements
-ms.date: 03/16/2023
-ms.author: kengaderdus
-ms.reviewer: yoelh
-ms.subservice: B2C
----
 
-# Write your first Azure Active Directory B2C custom policy - Hello World! 
+# 初めての Azure Active Directory B2C カスタム ポリシーを作成します - Hello World!
 
-In your applications, you can use user flows that enable users to sign up, sign in, or manage their profile. When user flows don't cover all your business specific needs, you use [custom policies](custom-policy-overview.md). 
+アプリケーションでは、ユーザーがサインアップ、サインイン、またはプロファイルを管理できるようにするユーザー フローを使用できます。ユーザー フローがビジネス固有のニーズをすべてカバーできない場合は、カスタム ポリシーを使用します。
+
+事前に作成されたカスタム ポリシー[スターターパック](https://github.com/Azure-Samples/active-directory-b2c-custom-policy-starterpack)を使用してカスタム ポリシーを作成できますが、カスタム ポリシーの構築方法を理解することが重要です。この記事では、最初のカスタム ポリシーを最初から作成する方法を学習します。
 
 While you can use pre-made custom policy [starter pack](https://github.com/Azure-Samples/active-directory-b2c-custom-policy-starterpack) to write custom policies, it's important for you understand how a custom policy is built. In this article, you'll learn how to create your first custom policy from scratch. 
 
