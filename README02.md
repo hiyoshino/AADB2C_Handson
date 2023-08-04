@@ -475,3 +475,4 @@ Step 6 を完了すると、`ContosoCustomPolicy.XML` ファイルは次のコ�
     }.[Signature]
 ``` 
 
+完全なコードは [policy/ContosoCustomPolicy02.xml](/policy/ContosoCustomPolicy02.xml)
