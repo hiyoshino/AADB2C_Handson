@@ -455,7 +455,7 @@ Step 6 を完了すると、`ContosoCustomPolicy.XML` ファイルは次のコ�
 
 1. 名と姓を入力し、[Continue] (続行) を選びます。
 
-    :::image type="content" source="media/screenshot-of-accepting-user-inputs-in-custom-policy.png" alt-text="screenshot of accepting user inputs in custom policy.":::
+![ScreenShot](/media/screenshot-of-accepting-user-inputs-in-custom-policy.png)" 
 
 ポリシーの実行が完了すると、https://jwt.ms にリダイレクトされ、デコードされた JWT トークンが表示されます。 次の JWT トークン スニペットのようになります。
 
