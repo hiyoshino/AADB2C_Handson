@@ -243,8 +243,7 @@ Azure Active Directory B2C (Azure AD B2C) は Azure Active Directory (Azure AD) 
 AAD-UserWrite Azure AD 技術プロファイルで、ユーザーが既に存在する場合は、エラー メッセージが表示されることを指定します。
 
 同じ*電子メール* *アドレス*を使用して、カスタム ポリシーをもう一度テストします。 ポリシーが最後まで完了して ID トークンを発行するのではなく、次のスクリーンショットのようなエラー メッセージが表示されます
- 
-   ![ScreenShot](/media/sscreenshot-of-error-account-already-exists.png)
+    ![ScreenShot](/media/screenshot-of-error-account-already-exists.png)
 
 > [!NOTE]
 > "パスワード" 要求の値は非常に重要な情報であるため、カスタム ポリシーでの取り扱い方法には十分注意してください。 同様の理由から、Azure AD B2C ではパスワード要求の値は特別な値として扱われます。 セルフアサート技術プロファイルでパスワード要求の値を収集すると、その値は同じ技術プロファイル内、または同じセルフアサート技術プロファイルによって参照される検証技術プロファイル内でのみ使用できます。 そのセルフアサート技術プロファイルの実行が完了し、別の技術プロファイルに移動すると、値は失われます。 
