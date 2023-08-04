@@ -6,31 +6,20 @@
 
 事前に作成されたカスタム ポリシー[スターターパック](https://github.com/Azure-Samples/active-directory-b2c-custom-policy-starterpack)を使用してカスタム ポリシーを作成できますが、カスタム ポリシーの構築方法を理解することが重要です。この記事では、最初のカスタム ポリシーを最初から作成する方法を学習します。
 
-While you can use pre-made custom policy [starter pack](https://github.com/Azure-Samples/active-directory-b2c-custom-policy-starterpack) to write custom policies, it's important for you understand how a custom policy is built. In this article, you'll learn how to create your first custom policy from scratch. 
-
-## Prerequisites 
-
-- If you don't have one already, [create an Azure AD B2C tenant](tutorial-create-tenant.md) that is linked to your Azure subscription.
-
-- [Register a web application](tutorial-register-applications.md), and [enable ID token implicit grant](tutorial-register-applications.md#enable-id-token-implicit-grant). For the Redirect URI, use https://jwt.ms. 
-
-- You must have [Visual Studio Code (VS Code)](https://code.visualstudio.com/) installed in your computer. 
-
-[!INCLUDE [active-directory-b2c-app-integration-call-api](../../includes/active-directory-b2c-common-note-custom-policy-how-to-series.md)]
-
-## Step 1 - Configure the signing and encryption keys
+## Step 1 - 署名キーと暗号化キーを構成する
 
 If you haven't already done so, create the following encryption keys. To automate the walk-through below, visit the [IEF Setup App](https://b2ciefsetupapp.azurewebsites.net/) and follow the instructions: 
 
-  1. Use the steps in [Add signing and encryption keys for Identity Experience Framework applications](tutorial-create-user-flows.md?pivots=b2c-custom-policy#add-signing-and-encryption-keys-for-identity-experience-framework-applications) to create the signing key. 
+  1. [「Identity Experience Framework アプリケーションの署名および暗号化キーを追加する」](https://learn.microsoft.com/ja-jp/azure/active-directory-b2c/tutorial-create-user-flows?pivots=b2c-custom-policy#add-signing-and-encryption-keys-for-identity-experience-framework-applications)の手順を使用して、署名キーを作成します。
+  
+  2. [「Identity Experience Framework アプリケーションの署名および暗号化キーを追加する」](https://learn.microsoft.com/ja-jp/azure/active-directory-b2c/tutorial-create-user-flows?pivots=b2c-custom-policy#add-signing-and-encryption-keys-for-identity-experience-framework-applications)の手順を使用して、暗号化キーを作成します。
+  
 
-  1. Use the steps in [Add signing and encryption keys for Identity Experience Framework applications](tutorial-create-user-flows.md?pivots=b2c-custom-policy#add-signing-and-encryption-keys-for-identity-experience-framework-applications) to create the encryption key.
+## Step 2 - カスタム ポリシー ファイルをビルドする
 
-## Step 2 - Build the custom policy file
+1. VS Code で、`ContosoCustomPolicy.XML` ファイルを作成して開きます。
 
-1. In VS Code, create and open the file `ContosoCustomPolicy.XML`.
-
-1. In the `ContosoCustomPolicy.XML` file, add the following code:
+2. `ContosoCustomPolicy.XML` ファイルに次のコードを追記します。:
     
     ```xml
         <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -65,11 +54,11 @@ If you haven't already done so, create the following encryption keys. To automat
         </TrustFrameworkPolicy>
 
     ```
-    Replace `yourtenant` with the subdomain part of your tenant name, such as `contoso`. Learn how to [Get your tenant name](tenant-management-read-tenant-name.md#get-your-tenant-name). 
+    `yourtenant` を、テナント名のサブドメイン部分( `contoso`など) に置き換えます。
 
-    The XML elements define the top-level `TrustFrameworkPolicy` element of a policy file with its policy ID and tenant name. The TrustFrameworkPolicy element contains other XML elements that you'll use in this series.
+    XML 要素は、ポリシー ID とテナント名を持つポリシー ファイルの最上位 `TrustFrameworkPolicy` 要素を定義します。 `TrustFrameworkPolicy` 要素には、このシリーズで使用する他の XML 要素が含まれています。
 
-1. To declare a claim, add the following code in `BuildingBlocks` section of the `ContosoCustomPolicy.XML` file: 
+3. 要求を宣言するには、ContosoCustomPolicy.XML ファイルの BuildingBlocks セクションに次のコードを追加します。: 
 
     ```xml
       <ClaimsSchema>
@@ -83,9 +72,9 @@ If you haven't already done so, create the following encryption keys. To automat
         </ClaimType>
       </ClaimsSchema>
     ``` 
-    A [claim](claimsschema.md#claimtype) is like a variable. The claim's declaration also shows the claim's [data type](claimsschema.md#datatype). 
+    要求は変数に似ています。 要求の宣言には、要求のデータ型も表示されます。
 
-1. In the `ClaimsProviders` section of the `ContosoCustomPolicy.XML` file, add the following code:
+4. ContosoCustomPolicy.XML ファイルの ClaimsProviders セクションで、次のコードを追加します。:
 
     ```xml
         <ClaimsProvider>
@@ -123,9 +112,9 @@ If you haven't already done so, create the following encryption keys. To automat
         </ClaimsProvider>
     ```
     
-    We've declared a JWT Token Issuer. In the `CryptographicKeys` section, if you used different names to configure the signing and encryption keys in [step 1](#step-1---configure-the-signing-and-encryption-keys), make sure you use the correct value for the `StorageReferenceId`.  
+    JWT トークン発行者を宣言しました。 手順 1 で別の名前を使用して署名キーと暗号化キーを構成した場合は、CryptographicKeys セクションで StorageReferenceId に正しい値を使用していることを確認します。
 
-1. In the `UserJourneys` section of the `ContosoCustomPolicy.XML` file, add the following code:
+5. ContosoCustomPolicy.XML ファイルの UserJourneys セクションで、次のコードを追加します。:
 
     ```xml
       <UserJourney Id="HelloWorldJourney">
@@ -135,9 +124,9 @@ If you haven't already done so, create the following encryption keys. To automat
       </UserJourney>
     ```
     
-    We've added a [UserJourney](userjourneys.md). The user journey specifies the business logic the end user goes through as Azure AD B2C processes a request. This user journey has only one step that issues a JTW token with the claims that you'll define in the next step.
+    UserJourney を追加しました。 ユーザー体験では、Azure AD B2C で要求が処理される際にエンド ユーザーが通過するビジネス ロジックを指定します。 このユーザー体験には、次の手順で定義する要求で JTW トークンを発行する手順が 1 つだけ含まれています。
 
-1.  In the `RelyingParty` section of the `ContosoCustomPolicy.XML` file, add the following code:
+6.  ContosoCustomPolicy.XML ファイルの RelyingParty セクションで、次のコードを追加します。
 
     ```xml
       <DefaultUserJourney ReferenceId="HelloWorldJourney"/>
@@ -152,9 +141,9 @@ If you haven't already done so, create the following encryption keys. To automat
       </TechnicalProfile>
     ```
 
-    The [RelyingParty](relyingparty.md) section is the entry point to your policy. It specifies the [UserJourney](userjourneys.md) to execute and the claims to include in the token that is returned when the policy runs.  
+    RelyingParty セクションは、ポリシーのエントリ ポイントです。 実行する UserJourney と、ポリシーの実行時に返されるトークンに含める要求を指定します。 
 
-After you complete [step 2](#step-2---build-the-custom-policy-file), the `ContosoCustomPolicy.XML` file should look similar to the following code: 
+完了すると、ContosoCustomPolicy.XML ファイルは次のコードのようになります。
 
 ```xml
     <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -231,27 +220,27 @@ After you complete [step 2](#step-2---build-the-custom-policy-file), the `Contos
     </TrustFrameworkPolicy>
 ```
     
-## Step 3 - Upload custom policy file
+## Step 3 - カスタム ポリシー ファイルをアップロードする
 
-1. Sign in to the [Azure portal](https://portal.azure.com).
-1. Make sure you're using the directory that contains your Azure AD B2C tenant: 
-    1. Select the **Directories + subscriptions** icon in the portal toolbar.
-    1. On the **Portal settings | Directories + subscriptions** page, find your Azure AD B2C directory in the **Directory name** list, and then select **Switch**.
-1. In the Azure portal, search for and select **Azure AD B2C**.
-1. In the left menu, under **Policies**, select **Identity Experience Framework**.
-1. Select **Upload custom policy**, browse select and then upload the `ContosoCustomPolicy.XML` file. 
-
-
-After you upload the file, Azure AD B2C adds the prefix `B2C_1A_`, so the names looks similar to **B2C_1A_CONTOSOCUSTOMPOLICY**.
+1. Azure portal にサインインします。
+2. ご利用の Azure AD B2C テナントが含まれるディレクトリを必ず使用してください。
+  a. ポータル ツールバーの [Directories + subscriptions](ディレクトリ + サブスクリプション) アイコンを選択します。
+  b. [ポータルの設定] | [Directories + subscriptions](ディレクトリ + サブスクリプション) ページの [ディレクトリ名] の一覧で自分の Azure AD B2C ディレクトリを見つけて、 [切り替え] を選択します。
+3. Azure portal で、 [Azure AD B2C] を検索して選択します。
+4. 左側のメニューの [ポリシー] で、[Identity Experience Framework] を選択します。
+5. [カスタム ポリシーのアップロード] を選択し、参照して選択し、ContosoCustomPolicy.XML ファイルをアップロードします。
 
 
-## Step 4 - Test the custom policy
+ファイルをアップロードすると、Azure AD B2C によって プレフィックス B2C_1A_ が追加されるため、名前は B2C_1A_CONTOSOCUSTOMPOLICY のようになります
 
-1. Under **Custom policies**, select **B2C_1A_CONTOSOCUSTOMPOLICY**.
-1. For **Select application** on the overview page of the custom policy, select the web application such as *webapp1* that you previously registered. Make sure that the **Select reply URL** value is set to`https://jwt.ms`.
-1. Select **Run now** button.
 
-After the policy finishes execution, you're redirected to `https://jwt.ms`, and you see a decoded JWT token. It looks similar to the following JWT token snippet: 
+## Step 4 - カスタム ポリシーをテストする
+
+1. [カスタム ポリシー] で、[B2C_1A_CONTOSOCUSTOMPOLICY] を選択します。
+2. カスタム ポリシーの概要ページの [アプリケーションの選択] で、以前に登録した webapp1 などの Web アプリケーションを選択します。 [応答 URL の選択] の値が https://jwt.ms に設定されていることを確認します。
+3. [今すぐ実行] ボタンを選択します。
+
+ポリシーの実行が完了すると、https://jwt.ms にリダイレクトされ、デコードされた JWT トークンが表示されます。 次の JWT トークン スニペットのようになります。
 
 ```json
     {
@@ -268,27 +257,5 @@ After the policy finishes execution, you're redirected to `https://jwt.ms`, and 
     }.[Signature]
 ``` 
 
-Notice the `message` and `sub` claims, which we set as [output claims](relyingparty.md#outputclaims) in the `RelyingParty` section. 
+RelyingParty セクションで出力要求として設定した message と sub 要求に注目してください。
 
-## Next steps
-
-In this article, you learned and used four sections that are included in an Azure AD B2C custom policy. These sections are added as child elements the `TrustFrameworkPolicy` root element: 
-
-> [!div class="checklist"]
-> - BuildingBlocks 
-> - ClaimsProviders 
-> - UserJourneys 
-> - RelyingParty 
-
-
-Next, learn:  
-
-- How to [collect and use user inputs by using custom policy](custom-policies-series-collect-user-input.md).
-
-- About custom policy [claims overview](custom-policy-overview.md#claims).
-
-- How to [declare a custom policy claim](claimsschema.md). 
-
-- About custom policy [claims data type](claimsschema.md#datatype). 
-
-- About custom policy [user input types](claimsschema.md#userinputtype).
