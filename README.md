@@ -258,4 +258,5 @@
 ``` 
 
 RelyingParty セクションで出力要求として設定した message と sub 要求に注目してください。
+
 完全なポリシーは [Policy/ContosoCustomPolicy01.xml](policy/ContosoCustomPolicy01.xml) になります。
