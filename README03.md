@@ -336,7 +336,7 @@ Predicates によって、要求タイプに対してチェックを行う検証
 
 1. [続行] ボタンを選択します。 下に示すような画面が表示されます。
 
-    ![ScreenShot](/media/screenshot-of-user-input-validation.png)" 
+    ![ScreenShot](/media/screenshot-of-user-input-validation.png)
 
    続行する前に、入力を修正する必要があります。
 
