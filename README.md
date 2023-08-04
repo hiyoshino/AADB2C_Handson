@@ -8,7 +8,7 @@
 
 ## Step 1 - 署名キーと暗号化キーを構成する
 
-If you haven't already done so, create the following encryption keys. To automate the walk-through below, visit the [IEF Setup App](https://b2ciefsetupapp.azurewebsites.net/) and follow the instructions: 
+まだ行っていない場合は、次の暗号化キーを作成します。 
 
   1. [「Identity Experience Framework アプリケーションの署名および暗号化キーを追加する」](https://learn.microsoft.com/ja-jp/azure/active-directory-b2c/tutorial-create-user-flows?pivots=b2c-custom-policy#add-signing-and-encryption-keys-for-identity-experience-framework-applications)の手順を使用して、署名キーを作成します。
   
@@ -224,8 +224,8 @@ If you haven't already done so, create the following encryption keys. To automat
 
 1. Azure portal にサインインします。
 2. ご利用の Azure AD B2C テナントが含まれるディレクトリを必ず使用してください。
-  a. ポータル ツールバーの [Directories + subscriptions](ディレクトリ + サブスクリプション) アイコンを選択します。
-  b. [ポータルの設定] | [Directories + subscriptions](ディレクトリ + サブスクリプション) ページの [ディレクトリ名] の一覧で自分の Azure AD B2C ディレクトリを見つけて、 [切り替え] を選択します。
+  - a. ポータル ツールバーの [Directories + subscriptions](ディレクトリ + サブスクリプション) アイコンを選択します。
+  - b. [ポータルの設定] | [Directories + subscriptions](ディレクトリ + サブスクリプション) ページの [ディレクトリ名] の一覧で自分の Azure AD B2C ディレクトリを見つけて、 [切り替え] を選択します。
 3. Azure portal で、 [Azure AD B2C] を検索して選択します。
 4. 左側のメニューの [ポリシー] で、[Identity Experience Framework] を選択します。
 5. [カスタム ポリシーのアップロード] を選択し、参照して選択し、ContosoCustomPolicy.XML ファイルをアップロードします。
@@ -258,4 +258,4 @@ If you haven't already done so, create the following encryption keys. To automat
 ``` 
 
 RelyingParty セクションで出力要求として設定した message と sub 要求に注目してください。
-
+完全なポリシーは [Policy/ContosoCustomPolicy01.xml](policy/ContosoCustomPolicy01.xml) になります。
