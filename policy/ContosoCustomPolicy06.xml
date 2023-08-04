@@ -1,0 +1,954 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    <TrustFrameworkPolicy
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+      xmlns="http://schemas.microsoft.com/online/cpim/schemas/2013/06"
+      PolicySchemaVersion="0.3.0.0"
+      TenantId="yourtenant.onmicrosoft.com"
+      PolicyId="B2C_1A_ContosoCustomPolicy"
+      PublicPolicyUri="http://yourtenant.onmicrosoft.com/B2C_1A_ContosoCustomPolicy">
+
+        <BuildingBlocks>
+            <!-- Building Blocks Here-->
+            <ClaimsSchema>
+                <ClaimType Id="objectId">
+                    <DisplayName>unique object Id for subject of the claims being returned</DisplayName>
+                    <DataType>string</DataType>
+                </ClaimType>        
+                <ClaimType Id="message">
+                    <DisplayName>Will hold Hello World message</DisplayName>
+                    <DataType>string</DataType>
+                </ClaimType>
+                <!-- ０２追加-->
+                <ClaimType Id="givenName">
+                        <DisplayName>Given Name</DisplayName>
+                        <DataType>string</DataType>
+                        <UserHelpText>Your given name (also known as first name).</UserHelpText>
+                        <UserInputType>TextBox</UserInputType>
+                    </ClaimType>
+
+                    <ClaimType Id="surname">
+                        <DisplayName>Surname</DisplayName>
+                        <DataType>string</DataType>
+                        <UserHelpText>Your surname (also known as family name or last name).</UserHelpText>
+                        <UserInputType>TextBox</UserInputType>
+                    </ClaimType>
+                    <ClaimType Id="displayName">
+                        <DisplayName>Display Name</DisplayName>
+                        <DataType>string</DataType>
+                        <UserHelpText>Your display name.</UserHelpText>
+                        <UserInputType>TextBox</UserInputType>
+                </ClaimType>
+
+                <!--追加-->
+                <ClaimType Id="accountType">
+                    <DisplayName>Account Type</DisplayName>
+                    <DataType>string</DataType>
+                    <UserHelpText>The type of account used by the user</UserHelpText>
+                    <UserInputType>RadioSingleSelect</UserInputType>
+                    <Restriction>
+                        <Enumeration Text="Contoso Employee Account" Value="work" SelectByDefault="true"/>
+                        <Enumeration Text="Personal Account" Value="personal" SelectByDefault="false"/>
+                    </Restriction>
+                </ClaimType>
+
+                <ClaimType Id="email">
+                    <DisplayName>Email Address</DisplayName>
+                    <DataType>string</DataType>
+                    <DefaultPartnerClaimTypes>
+                        <Protocol Name="OpenIdConnect" PartnerClaimType="email"/>
+                    </DefaultPartnerClaimTypes>
+                    <UserHelpText>Your email address. </UserHelpText>
+                    <UserInputType>TextBox</UserInputType>
+                    <Restriction>
+                        <Pattern RegularExpression="^[a-zA-Z0-9.!#$%&amp;&apos;^_`{}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$" HelpText="Please enter a valid email address something like maurice@contoso.com"/>
+                    </Restriction>
+                </ClaimType>   
+
+                <ClaimType Id="password">
+                    <DisplayName>Password</DisplayName>
+                    <DataType>string</DataType>
+                    <AdminHelpText>Enter password</AdminHelpText>
+                    <UserHelpText>Enter password</UserHelpText>
+                    <UserInputType>Password</UserInputType>
+                    <PredicateValidationReference Id="StrongPassword" />
+                </ClaimType>    
+
+                <ClaimType Id="reenterPassword">
+                    <DisplayName>Confirm new password</DisplayName>
+                    <DataType>string</DataType>
+                    <AdminHelpText>Confirm new password</AdminHelpText>
+                    <UserHelpText>Reenter password</UserHelpText>
+                    <UserInputType>Password</UserInputType>
+                </ClaimType>
+
+                <ClaimType Id="domain">
+                <DataType>string</DataType>
+                </ClaimType>
+
+                <ClaimType Id="domainStatus">
+                <DataType>string</DataType>
+                </ClaimType> 
+
+                <!-- 追加20230802 -->
+                <ClaimType Id="accessCode">
+                    <DisplayName>Access Code</DisplayName>
+                    <DataType>string</DataType>
+                    <UserHelpText>Enter your invitation access code.</UserHelpText>
+                    <UserInputType>Password</UserInputType>
+                    <Restriction>
+                        <Pattern RegularExpression="[0-9][0-9][0-9][0-9][0-9]" HelpText="Please enter your invitation access code. It's a 5-digit number, something like 95765"/>
+                    </Restriction>
+                </ClaimType>
+                <ClaimType Id="isValidAccessCode">
+                    <DataType>boolean</DataType>
+                </ClaimType>   
+
+                <!-- 追加20230803 -->
+                <ClaimType Id="userPrincipalName">
+                    <DisplayName>UserPrincipalName</DisplayName>
+                    <DataType>string</DataType>
+                    <UserHelpText>Your user name as stored in the Azure Active Directory.</UserHelpText>
+                </ClaimType>
+                <ClaimType Id="passwordPolicies">
+                    <DisplayName>Password Policies</DisplayName>
+                    <DataType>string</DataType>
+                    <UserHelpText>Password policies used by Azure AD to determine password strength, expiry etc.</UserHelpText>
+                </ClaimType>
+
+            <!--<ClaimsSchema>  追加 20230803 ★★★-->
+                <ClaimType Id="verificationCode">
+                    <DisplayName>Verification Code</DisplayName>
+                    <DataType>string</DataType>
+                    <UserHelpText>Enter your verification code</UserHelpText>
+                    <UserInputType>TextBox</UserInputType>
+                </ClaimType>
+            <!--</ClaimsSchema>-->
+
+            <!--<ClaimsSchema> OIDC/OAuth 用のクレーム追加 20230803 -->
+                <ClaimType Id="grant_type">
+                    <DisplayName>grant_type</DisplayName>
+                    <DataType>string</DataType>
+                    <UserHelpText>Special parameter passed for local account authentication to login.microsoftonline.com.</UserHelpText>
+                </ClaimType>
+                
+                <ClaimType Id="scope">
+                    <DisplayName>scope</DisplayName>
+                    <DataType>string</DataType>
+                    <UserHelpText>Special parameter passed for local account authentication to login.microsoftonline.com.</UserHelpText>
+                </ClaimType>
+                
+                <ClaimType Id="nca">
+                    <DisplayName>nca</DisplayName>
+                    <DataType>string</DataType>
+                    <UserHelpText>Special parameter passed for local account authentication to login.microsoftonline.com.</UserHelpText>
+                </ClaimType>
+                
+                <ClaimType Id="client_id">
+                    <DisplayName>client_id</DisplayName>
+                    <DataType>string</DataType>
+                    <AdminHelpText>Special parameter passed to EvoSTS.</AdminHelpText>
+                    <UserHelpText>Special parameter passed to EvoSTS.</UserHelpText>
+                </ClaimType>
+                
+                <ClaimType Id="resource_id">
+                    <DisplayName>resource_id</DisplayName>
+                    <DataType>string</DataType>
+                    <AdminHelpText>Special parameter passed to EvoSTS.</AdminHelpText>
+                    <UserHelpText>Special parameter passed to EvoSTS.</UserHelpText>
+                </ClaimType>
+            <!--</ClaimsSchema>-->
+
+            </ClaimsSchema>
+
+            <!-- Predicates は ClaimsSchemaの直後に記述する-->
+            <Predicates>
+                <Predicate Id="IsLengthBetween8And64" Method="IsLengthRange" HelpText="The password must be between 8 and 64 characters.">
+                    <Parameters>
+                    <Parameter Id="Minimum">8</Parameter>
+                    <Parameter Id="Maximum">64</Parameter>
+                    </Parameters>
+                </Predicate>
+
+                <Predicate Id="Lowercase" Method="IncludesCharacters" HelpText="a lowercase letter">
+                    <Parameters>
+                    <Parameter Id="CharacterSet">a-z</Parameter>
+                    </Parameters>
+                </Predicate>
+
+                <Predicate Id="Uppercase" Method="IncludesCharacters" HelpText="an uppercase letter">
+                    <Parameters>
+                    <Parameter Id="CharacterSet">A-Z</Parameter>
+                    </Parameters>
+                </Predicate>
+
+                <Predicate Id="Number" Method="IncludesCharacters" HelpText="a digit">
+                    <Parameters>
+                    <Parameter Id="CharacterSet">0-9</Parameter>
+                    </Parameters>
+                </Predicate>
+
+                <Predicate Id="Symbol" Method="IncludesCharacters" HelpText="a symbol">
+                    <Parameters>
+                    <Parameter Id="CharacterSet">@#$%^&amp;*\-_+=[]{}|\\:',.?/`~"();!</Parameter>
+                    </Parameters>
+                </Predicate>
+
+                <Predicate Id="PIN" Method="MatchesRegex" HelpText="The password must be numbers only.">
+                    <Parameters>
+                    <Parameter Id="RegularExpression">^[0-9]+$</Parameter>
+                    </Parameters>
+                </Predicate>
+
+                <Predicate Id="AllowedCharacters" Method="MatchesRegex" HelpText="An invalid character was provided.">
+                    <Parameters>
+                    <Parameter Id="RegularExpression">(^([0-9A-Za-z\d@#$%^&amp;*\-_+=[\]{}|\\:',?/`~"();! ]|(\.(?!@)))+$)|(^$)</Parameter>
+                    </Parameters>
+                </Predicate>
+
+                <Predicate Id="DisallowedWhitespace" Method="MatchesRegex" HelpText="The password must not begin or end with a whitespace character.">
+                    <Parameters>
+                    <Parameter Id="RegularExpression">(^\S.*\S$)|(^\S+$)|(^$)</Parameter>
+                    </Parameters>
+                </Predicate>
+            </Predicates>
+            
+            <!-- PredicateValidation は Predicatesの直後に記述する-->
+            <PredicateValidations>
+                <PredicateValidation Id="SimplePassword">
+                        <PredicateGroups>
+                            <PredicateGroup Id="DisallowedWhitespaceGroup">
+                                <PredicateReferences>
+                                    <PredicateReference Id="DisallowedWhitespace"/>
+                                </PredicateReferences>
+                            </PredicateGroup>
+                            <PredicateGroup Id="AllowedCharactersGroup">
+                                <PredicateReferences>
+                                    <PredicateReference Id="AllowedCharacters"/>
+                                </PredicateReferences>
+                            </PredicateGroup>
+                            <PredicateGroup Id="LengthGroup">
+                                <PredicateReferences>
+                                    <PredicateReference Id="IsLengthBetween8And64"/>
+                                </PredicateReferences>
+                            </PredicateGroup>
+                        </PredicateGroups>
+                    </PredicateValidation>
+                    <PredicateValidation Id="StrongPassword">
+                        <PredicateGroups>
+                            <PredicateGroup Id="DisallowedWhitespaceGroup">
+                                <PredicateReferences>
+                                    <PredicateReference Id="DisallowedWhitespace"/>
+                                </PredicateReferences>
+                            </PredicateGroup>
+                            <PredicateGroup Id="AllowedCharactersGroup">
+                                <PredicateReferences>
+                                    <PredicateReference Id="AllowedCharacters"/>
+                                </PredicateReferences>
+                            </PredicateGroup>
+                            <PredicateGroup Id="LengthGroup">
+                                <PredicateReferences>
+                                    <PredicateReference Id="IsLengthBetween8And64"/>
+                                </PredicateReferences>
+                            </PredicateGroup>
+                            <PredicateGroup Id="CharacterClasses">
+                                <UserHelpText>The password must have at least 3 of the following:</UserHelpText>
+                                <PredicateReferences MatchAtLeast="3">
+                                    <PredicateReference Id="Lowercase"/>
+                                    <PredicateReference Id="Uppercase"/>
+                                    <PredicateReference Id="Number"/>
+                                    <PredicateReference Id="Symbol"/>
+                                </PredicateReferences>
+                            </PredicateGroup>
+                        </PredicateGroups>
+                    </PredicateValidation>
+                    <PredicateValidation Id="CustomPassword">
+                        <PredicateGroups>
+                            <PredicateGroup Id="DisallowedWhitespaceGroup">
+                                <PredicateReferences>
+                                    <PredicateReference Id="DisallowedWhitespace"/>
+                                </PredicateReferences>
+                            </PredicateGroup>
+                            <PredicateGroup Id="AllowedCharactersGroup">
+                                <PredicateReferences>
+                                    <PredicateReference Id="AllowedCharacters"/>
+                                </PredicateReferences>
+                            </PredicateGroup>
+                        </PredicateGroups>
+                    </PredicateValidation>
+            </PredicateValidations>
+
+            <!-- 追加-->
+            <ClaimsTransformations>
+
+                <ClaimsTransformation Id="GenerateRandomObjectIdTransformation" TransformationMethod="CreateRandomString">
+                        <InputParameters>
+                        <InputParameter Id="randomGeneratorType" DataType="string" Value="GUID"/> <!-- ランダム GUID形式-->
+                        </InputParameters>
+                        <OutputClaims>
+                        <OutputClaim ClaimTypeReferenceId="objectId" TransformationClaimType="outputClaim"/>
+                        </OutputClaims>
+                    </ClaimsTransformation>
+
+                    <ClaimsTransformation Id="CreateDisplayNameTransformation" TransformationMethod="FormatStringMultipleClaims">
+                        <InputClaims>
+                        <InputClaim ClaimTypeReferenceId="givenName" TransformationClaimType="inputClaim1"/>
+                        <InputClaim ClaimTypeReferenceId="surname" TransformationClaimType="inputClaim2"/>
+                        </InputClaims>
+                        <InputParameters>
+                        <InputParameter Id="stringFormat" DataType="string" Value="{0} {1}"/>
+                        </InputParameters>
+                        <OutputClaims>
+                        <OutputClaim ClaimTypeReferenceId="displayName" TransformationClaimType="outputClaim"/>
+                        </OutputClaims>
+                    </ClaimsTransformation>
+
+                    <ClaimsTransformation Id="CreateMessageTransformation" TransformationMethod="FormatStringClaim">
+                        <InputClaims>
+                        <InputClaim ClaimTypeReferenceId="displayName" TransformationClaimType="inputClaim"/>
+                        </InputClaims>
+                        <InputParameters>
+                        <InputParameter Id="stringFormat" DataType="string" Value="Hello {0}"/>
+                        </InputParameters>
+                        <OutputClaims>
+                        <OutputClaim ClaimTypeReferenceId="message" TransformationClaimType="outputClaim"/>
+                        </OutputClaims>
+                    </ClaimsTransformation>
+
+                    <!--追加-->
+                    <ClaimsTransformation Id="GetDomainFromEmail" TransformationMethod="ParseDomain">
+                        <InputClaims>
+                            <InputClaim ClaimTypeReferenceId="email" TransformationClaimType="emailAddress"/> 
+                        </InputClaims>
+                        <OutputClaims>
+                            <OutputClaim ClaimTypeReferenceId="domain" TransformationClaimType="domain"/>
+                        </OutputClaims>
+                    </ClaimsTransformation>
+                    <ClaimsTransformation Id="LookupDomain" TransformationMethod="LookupValue">
+                        <InputClaims>
+                            <InputClaim ClaimTypeReferenceId="domain" TransformationClaimType="inputParameterId"/>
+                        </InputClaims>
+                        <InputParameters>
+                            <InputParameter Id="aadwestjpn.work" DataType="string" Value="valid"/>
+                            <InputParameter Id="fabrikam.com" DataType="string" Value="valid"/>
+                            <InputParameter Id="woodgrove.com" DataType="string" Value="valid"/>
+                            <InputParameter Id="errorOnFailedLookup" DataType="boolean" Value="true"/>
+                        </InputParameters>
+                        <OutputClaims>
+                            <!-- OutputClaimには適切なドメイン名の場合は、"valid"が入る -->
+                            <OutputClaim ClaimTypeReferenceId="domainStatus" TransformationClaimType="outputClaim"/>
+                        </OutputClaims>
+                    </ClaimsTransformation> 
+
+                <!---<ClaimsTransformations 20230802 >-->
+                    <ClaimsTransformation Id="CheckIfIsValidAccessCode" TransformationMethod="CompareClaimToValue">
+                        <InputClaims>
+                            <InputClaim ClaimTypeReferenceId="accessCode" TransformationClaimType="inputClaim1"/>
+                        </InputClaims>
+                        <InputParameters>
+                            <InputParameter Id="compareTo" DataType="string" Value="88888"/>
+                            <InputParameter Id="operator" DataType="string" Value="equal"/>
+                            <InputParameter Id="ignoreCase" DataType="string" Value="true"/>
+                        </InputParameters>
+                        <OutputClaims>
+                            <OutputClaim ClaimTypeReferenceId="isValidAccessCode" TransformationClaimType="outputClaim"/>
+                        </OutputClaims>
+                    </ClaimsTransformation>
+                    <ClaimsTransformation Id="ThrowIfIsNotValidAccessCode" TransformationMethod="AssertBooleanClaimIsEqualToValue">
+                        <InputClaims>
+                            <InputClaim ClaimTypeReferenceId="isValidAccessCode" TransformationClaimType="inputClaim"/>
+                        </InputClaims>
+                        <InputParameters>
+                            <InputParameter Id="valueToCompareTo" DataType="boolean" Value="true"/>
+                        </InputParameters>
+                    </ClaimsTransformation>
+                <!---</ClaimsTransformations>-->                                       
+
+            </ClaimsTransformations>
+
+            <ContentDefinitions>
+                <ContentDefinition Id="SelfAssertedContentDefinition">
+                    <LoadUri>~/tenant/templates/AzureBlue/selfAsserted.cshtml</LoadUri>
+                    <RecoveryUri>~/common/default_page_error.html</RecoveryUri>
+                    <DataUri>urn:com:microsoft:aad:b2c:elements:contract:selfasserted:2.1.7</DataUri>
+                </ContentDefinition>
+
+            <!--<ContentDefinitions> SUSI 用の画面追加 20230803 ★★★★-->
+                <ContentDefinition Id="SignupOrSigninContentDefinition">
+                    <LoadUri>~/tenant/templates/AzureBlue/unified.cshtml</LoadUri>
+                    <RecoveryUri>~/common/default_page_error.html</RecoveryUri>
+                    <DataUri>urn:com:microsoft:aad:b2c:elements:contract:unifiedssp:2.1.7</DataUri>
+                    <Metadata>
+                        <Item Key="DisplayName">Signin and Signup</Item>
+                    </Metadata>
+                </ContentDefinition>
+            <!--</ContentDefinitions>-->
+            </ContentDefinitions>
+
+        <!--<BuildingBlocks>-->
+            <DisplayControls>
+                <DisplayControl Id="emailVerificationControl" UserInterfaceControlType="VerificationControl">
+                    <InputClaims>
+                        <InputClaim ClaimTypeReferenceId="email" /> 
+                    </InputClaims>
+                <DisplayClaims>
+                    <DisplayClaim ClaimTypeReferenceId="email" Required="true" />
+                    <DisplayClaim ClaimTypeReferenceId="verificationCode" ControlClaimType="VerificationCode" Required="true" />
+                </DisplayClaims>
+                <OutputClaims></OutputClaims>
+                <Actions>
+                    <Action Id="SendCode">
+                    <ValidationClaimsExchange>
+                        <ValidationClaimsExchangeTechnicalProfile TechnicalProfileReferenceId="AadSspr-SendCode" />
+                    </ValidationClaimsExchange>
+                    </Action>
+                    <Action Id="VerifyCode">
+                    <ValidationClaimsExchange>
+                        <ValidationClaimsExchangeTechnicalProfile TechnicalProfileReferenceId="AadSspr-VerifyCode" />
+                    </ValidationClaimsExchange>
+                    </Action>
+                </Actions>
+                </DisplayControl>
+            </DisplayControls> 
+        <!--</BuildingBlocks>-->
+
+        </BuildingBlocks>
+
+        <ClaimsProviders>
+            <!-- Claims Providers Here-->
+
+                <ClaimsProvider>
+                    <DisplayName>Token Issuer</DisplayName>
+                    <TechnicalProfiles>
+                        <TechnicalProfile Id="JwtIssuer">
+                        <DisplayName>JWT Issuer</DisplayName>
+                        <Protocol Name="None" />
+                        <OutputTokenFormat>JWT</OutputTokenFormat>
+                        <Metadata>
+                            <Item Key="client_id">{service:te}</Item>
+                            <Item Key="issuer_refresh_token_user_identity_claim_type">objectId</Item>
+                            <Item Key="SendTokenResponseBodyWithJsonNumbers">true</Item>
+                        </Metadata>
+                        <CryptographicKeys>
+                            <Key Id="issuer_secret" StorageReferenceId="B2C_1A_TokenSigningKeyContainer" />
+                            <Key Id="issuer_refresh_token_key" StorageReferenceId="B2C_1A_TokenEncryptionKeyContainer" />
+                        </CryptographicKeys>
+                        </TechnicalProfile>
+                    </TechnicalProfiles>
+                 </ClaimsProvider>
+
+                <ClaimsProvider>
+                    <!-- The technical profile(s) defined in this section is required by the framework to be included in all custom policies. -->
+                    <DisplayName>Trustframework Policy Engine TechnicalProfiles</DisplayName>
+                    <TechnicalProfiles>
+                        <TechnicalProfile Id="TpEngine_c3bd4fe2-1775-4013-b91d-35f16d377d13">
+                        <DisplayName>Trustframework Policy Engine Default Technical Profile</DisplayName>
+                        <Protocol Name="None" />
+                        <Metadata>
+                            <Item Key="url">{service:te}</Item>
+                        </Metadata>
+                        </TechnicalProfile>
+                    </TechnicalProfiles>
+                </ClaimsProvider>
+
+            <!--<ClaimsProvider>-->
+                <ClaimsProvider>
+
+                    <DisplayName>Claim Generator Technical Profiles</DisplayName>
+                    <!-- 新クレーム生成 --> 
+                    <TechnicalProfiles>
+
+                    <TechnicalProfile Id="UserInputMessageClaimGenerator">
+                        <DisplayName>User Message Claim Generator Technical Profile</DisplayName>
+                        <Protocol Name="Proprietary"
+                            Handler="Web.TPEngine.Providers.ClaimsTransformationProtocolProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                        <OutputClaims>
+                            <OutputClaim ClaimTypeReferenceId="message" />
+                        </OutputClaims>
+                        <OutputClaimsTransformations>
+                            <OutputClaimsTransformation ReferenceId="CreateMessageTransformation" />
+                        </OutputClaimsTransformations>
+                    </TechnicalProfile>
+                
+                    <TechnicalProfile Id="UserInputDisplayNameGenerator">
+                        <DisplayName>Display Name Claim Generator Technical Profile</DisplayName>
+                        <Protocol Name="Proprietary"
+                            Handler="Web.TPEngine.Providers.ClaimsTransformationProtocolProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                        <OutputClaims>
+                            <OutputClaim ClaimTypeReferenceId="displayName" />
+                        </OutputClaims>
+                        <OutputClaimsTransformations>
+                            <OutputClaimsTransformation ReferenceId="CreateDisplayNameTransformation" />
+                        </OutputClaimsTransformations>
+                    </TechnicalProfile>
+                    </TechnicalProfiles>
+                </ClaimsProvider>
+
+                <ClaimsProvider>
+                    <!-- Self Assert technical profile -->
+                    <DisplayName>Technical Profiles to collect user's details</DisplayName>
+                    <TechnicalProfiles>
+                        <TechnicalProfile Id="preUserInformationCollector">
+                            <DisplayName>Collect User Input Technical Profile</DisplayName>
+                            <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+                            <Metadata>
+                                <Item Key="ContentDefinitionReferenceId">SelfAssertedContentDefinition</Item>
+                                <Item Key="LookupNotFound">The provided email address isn't a valid Contoso Employee email.</Item>
+                            </Metadata>
+                            <DisplayClaims>
+                            <!-- <DisplayClaim ClaimTypeReferenceId="accountType" Required="true"/> --> 
+                                <DisplayClaim ClaimTypeReferenceId="email" Required="true"/>
+                            </DisplayClaims>
+                            <OutputClaims>
+                            <!-- <OutputClaim ClaimTypeReferenceId="accountType"/> --> 
+                                <OutputClaim ClaimTypeReferenceId="email"/>
+                            </OutputClaims>
+                            
+                            <!--追加-->
+                            <ValidationTechnicalProfiles>
+                                <ValidationTechnicalProfile ReferenceId="CheckCompanyDomain">
+                                    <Preconditions>
+                                        <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
+                                            <Value>accountType</Value>
+                                            <Value>work</Value>
+                                            <Action>SkipThisValidationTechnicalProfile</Action>
+                                        </Precondition>
+                                    </Preconditions>
+                                </ValidationTechnicalProfile>
+                            </ValidationTechnicalProfiles>
+
+                        </TechnicalProfile>
+
+                        <TechnicalProfile Id="CheckCompanyDomain">
+                            <DisplayName>Check Company validity </DisplayName>
+                            <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.ClaimsTransformationProtocolProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+                            <InputClaimsTransformations>
+                                <InputClaimsTransformation ReferenceId="GetDomainFromEmail"/>
+                            </InputClaimsTransformations>
+                            <OutputClaims>
+                                <OutputClaim ClaimTypeReferenceId="domain"/>
+                            </OutputClaims>
+                            <OutputClaimsTransformations>
+                                <OutputClaimsTransformation ReferenceId="LookupDomain"/>
+                            </OutputClaimsTransformations>
+                        </TechnicalProfile>
+
+                    </TechnicalProfiles>
+                </ClaimsProvider> 
+                
+                <ClaimsProvider>
+                    <!-- Self Assert technical profile -->
+                    <DisplayName>Technical Profiles to collect user's details</DisplayName>
+                    <TechnicalProfiles>
+                        <TechnicalProfile Id="UserInformationCollector">
+                            <DisplayName>Collect User Input Technical Profile</DisplayName>
+                            <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+                            <Metadata>
+                                <Item Key="ContentDefinitionReferenceId">SelfAssertedContentDefinition</Item>
+                                <Item Key="LookupNotFound">The provided email address isn't a valid Contoso Employee email.</Item>
+                            </Metadata>
+                            <InputClaims>
+                                <InputClaim ClaimTypeReferenceId="email" DefaultValue="email" />
+                            </InputClaims>
+
+                            <DisplayClaims>
+                                <DisplayClaim ClaimTypeReferenceId="givenName" Required="true"/>
+                                <DisplayClaim ClaimTypeReferenceId="surname" Required="true"/>
+                            <!-- <DisplayClaim ClaimTypeReferenceId="accountType" Required="true"/> --> 
+                            <!--    <DisplayClaim ClaimTypeReferenceId="email" Required="true"/> -->
+                            <!-- Eメール検証のために追加 20230803 ★★★ -->
+                                <DisplayClaim DisplayControlReferenceId="emailVerificationControl"/>
+
+                                <DisplayClaim ClaimTypeReferenceId="password" Required="true"/>
+                                <DisplayClaim ClaimTypeReferenceId="reenterPassword" Required="true"/>
+                            </DisplayClaims>
+                            <OutputClaims>
+                                <OutputClaim ClaimTypeReferenceId="givenName"/>
+                                <OutputClaim ClaimTypeReferenceId="surname"/>
+                            <!-- <OutputClaim ClaimTypeReferenceId="accountType"/> --> 
+                                <OutputClaim ClaimTypeReferenceId="email"/>
+                                <OutputClaim ClaimTypeReferenceId="password"/>
+                                <OutputClaim ClaimTypeReferenceId="reenterPassword"/>
+                            </OutputClaims>
+                            
+                            <!--追加 ドメインの検証技術プロファイル
+                            AAD-UserWrite 技術プロファイルがユーザー レコードを Azure AD ストレージに書き込む前に、
+                            displayName 要求値が使用可能でなければならないので、AAD-UserWrite の前に検証技術プロファイルを追加
+                            -->
+                            <!--<TechnicalProfile Id="UserInformationCollector">-->
+
+                            <ValidationTechnicalProfiles>
+                                <ValidationTechnicalProfile ReferenceId="UserInputDisplayNameGenerator"/>                             
+                                <ValidationTechnicalProfile ReferenceId="AAD-UserWrite"/>                                        
+                            </ValidationTechnicalProfiles>
+                            <!--</TechnicalProfile>-->
+                        </TechnicalProfile>
+
+                    </TechnicalProfiles>
+                </ClaimsProvider> 
+
+            <!--<ClaimsProviders>20230802 -->
+                <ClaimsProvider>
+                    <DisplayName>Technical Profiles to collect user's access code</DisplayName>
+                    <TechnicalProfiles>
+
+                        <TechnicalProfile Id="AccessCodeInputCollector">
+                            <DisplayName>Collect Access Code Input from user Technical Profile</DisplayName>
+                            <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+                            <Metadata>
+                                <Item Key="ContentDefinitionReferenceId">SelfAssertedContentDefinition</Item>
+                                <Item Key="UserMessageIfClaimsTransformationBooleanValueIsNotEqual">The access code is invalid.</Item>
+                                <Item Key="ClaimTypeOnWhichToEnable">accountType</Item>
+                                <Item Key="ClaimValueOnWhichToEnable">personal</Item>
+                            </Metadata>
+                            <DisplayClaims>
+                                <DisplayClaim ClaimTypeReferenceId="accessCode" Required="true"/>
+                            </DisplayClaims>
+                            <OutputClaims>
+                                <OutputClaim ClaimTypeReferenceId="accessCode"/>
+                                <OutputClaim ClaimTypeReferenceId="domainStatus" DefaultValue="valid"/>
+                            </OutputClaims>
+                            <ValidationTechnicalProfiles>
+                                <ValidationTechnicalProfile ReferenceId="CheckAccessCodeViaClaimsTransformationChecker"/>
+                            </ValidationTechnicalProfiles>
+                            <EnabledForUserJourneys>OnClaimsExistence</EnabledForUserJourneys>
+                        </TechnicalProfile>
+
+                        <TechnicalProfile Id="CheckAccessCodeViaClaimsTransformationChecker">
+                            <DisplayName>A Claims Transformations to check user's access code validity</DisplayName>
+                            <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.ClaimsTransformationProtocolProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+                            <OutputClaims>
+                                <OutputClaim ClaimTypeReferenceId="isValidAccessCode"/>
+                            </OutputClaims>
+                            <OutputClaimsTransformations>
+                                <OutputClaimsTransformation ReferenceId="CheckIfIsValidAccessCode"/>
+                                <OutputClaimsTransformation ReferenceId="ThrowIfIsNotValidAccessCode"/>
+                            </OutputClaimsTransformations>
+                        </TechnicalProfile>
+                    </TechnicalProfiles>
+                </ClaimsProvider>
+            <!--</ClaimsProviders>-->                      
+
+        <!--<ClaimsProviders>-->
+                <ClaimsProvider>
+                    <DisplayName>Technical Profile to collect user's accountType</DisplayName>
+                    <TechnicalProfiles>
+                        <TechnicalProfile Id="AccountTypeInputCollector">
+                            <DisplayName>Collect User Input Technical Profile</DisplayName>
+                            <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+                            <Metadata>
+                                <Item Key="ContentDefinitionReferenceId">SelfAssertedContentDefinition</Item>
+                            </Metadata>
+                            <DisplayClaims>
+                                <DisplayClaim ClaimTypeReferenceId="accountType" Required="true"/>
+                            </DisplayClaims>
+                            <OutputClaims>
+                                <OutputClaim ClaimTypeReferenceId="accountType"/>
+                            </OutputClaims>
+                        </TechnicalProfile>
+                    </TechnicalProfiles>
+                </ClaimsProvider>
+            <!--</ClaimsProviders>-->
+
+            <!-- 追加 20230803 -->
+            <ClaimsProvider>
+                <DisplayName>Azure AD Technical Profiles</DisplayName>
+                <TechnicalProfiles>
+                    <!--You'll add you Azure AD Technical Profiles here-->
+
+                    <TechnicalProfile Id="AAD-UserWrite">
+                        <DisplayName>Write user information to AAD</DisplayName>
+                        <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.AzureActiveDirectoryProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                        <Metadata>
+                            <Item Key="Operation">Write</Item>
+                            <Item Key="RaiseErrorIfClaimsPrincipalAlreadyExists">true</Item>
+                            <Item Key="UserMessageIfClaimsPrincipalAlreadyExists">The account already exists. Try to create another account</Item>
+                        </Metadata>
+                        <InputClaims>
+                            <InputClaim ClaimTypeReferenceId="email" PartnerClaimType="signInNames.emailAddress" Required="true" />
+                        </InputClaims>
+                        <PersistedClaims>
+                            <PersistedClaim ClaimTypeReferenceId="email" PartnerClaimType="signInNames.emailAddress" />        
+                            <PersistedClaim ClaimTypeReferenceId="displayName" />
+                            <PersistedClaim ClaimTypeReferenceId="givenName" />
+                            <PersistedClaim ClaimTypeReferenceId="surname" />
+                            <PersistedClaim ClaimTypeReferenceId="password"/>
+                            <PersistedClaim ClaimTypeReferenceId="passwordPolicies" DefaultValue="DisablePasswordExpiration,DisableStrongPassword" />
+                        </PersistedClaims>
+                        <OutputClaims>
+                            <OutputClaim ClaimTypeReferenceId="objectId" />
+                            <OutputClaim ClaimTypeReferenceId="userPrincipalName" />
+                            <OutputClaim ClaimTypeReferenceId="email" PartnerClaimType="signInNames.emailAddress" />
+                        </OutputClaims>
+                    </TechnicalProfile>
+
+
+                    <TechnicalProfile Id="AAD-UserRead">
+                        <DisplayName>Read user from Azure AD storage</DisplayName>
+                        <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.AzureActiveDirectoryProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                        <Metadata>
+                            <Item Key="Operation">Read</Item>
+                            <Item Key="RaiseErrorIfClaimsPrincipalAlreadyExists">false</Item>
+                            <Item Key="RaiseErrorIfClaimsPrincipalDoesNotExist">false</Item>
+                        </Metadata>
+                        <InputClaims>
+                            <InputClaim ClaimTypeReferenceId="email" PartnerClaimType="signInNames.emailAddress" Required="true" />
+                        </InputClaims>
+                        <OutputClaims>
+                            <OutputClaim ClaimTypeReferenceId="objectId" />
+                            <OutputClaim ClaimTypeReferenceId="userPrincipalName" />
+                            <OutputClaim ClaimTypeReferenceId="givenName"/>
+                            <OutputClaim ClaimTypeReferenceId="surname"/>
+                            <OutputClaim ClaimTypeReferenceId="displayName"/>
+                        </OutputClaims>
+                    </TechnicalProfile>
+
+                </TechnicalProfiles>
+            </ClaimsProvider>
+
+
+            <!--電子メール検証要 20230803 ★★★-->
+            <ClaimsProvider>
+                <DisplayName>Azure AD self-service password reset (SSPR)</DisplayName>
+                <TechnicalProfiles>
+                    <TechnicalProfile Id="AadSspr-SendCode">
+                    <DisplayName>Send Code</DisplayName>
+                    <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.AadSsprProtocolProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                    <Metadata>
+                        <Item Key="Operation">SendCode</Item>
+                    </Metadata>
+                    <InputClaims>
+                        <InputClaim ClaimTypeReferenceId="email" PartnerClaimType="emailAddress" />
+                    </InputClaims>
+                    </TechnicalProfile>
+                    <TechnicalProfile Id="AadSspr-VerifyCode">
+                    <DisplayName>Verify Code</DisplayName>
+                    <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.AadSsprProtocolProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                    <Metadata>
+                        <Item Key="Operation">VerifyCode</Item>
+                    </Metadata>
+                    <InputClaims>
+                        <InputClaim ClaimTypeReferenceId="verificationCode" />
+                        <InputClaim ClaimTypeReferenceId="email" PartnerClaimType="emailAddress" />
+                    </InputClaims>
+                    </TechnicalProfile>
+                </TechnicalProfiles>
+            </ClaimsProvider>
+
+
+        <!--<ClaimsProviders> OIDC/OAuth 用に追加 20230803★★★★ -->
+            <ClaimsProvider>
+                <DisplayName>OpenID Connect Technical Profiles</DisplayName>
+                <TechnicalProfiles>
+                    <TechnicalProfile Id="SignInUser">
+                        <DisplayName>Sign in with Local Account</DisplayName>
+                        <Protocol Name="OpenIdConnect" />
+                        <Metadata>
+                            <Item Key="UserMessageIfClaimsPrincipalDoesNotExist">We didn't find this account</Item>
+                            <Item Key="UserMessageIfInvalidPassword">Your password or username is incorrect</Item>
+                            <Item Key="UserMessageIfOldPasswordUsed">You've used an old password.</Item>
+                            <Item Key="ProviderName">https://sts.windows.net/</Item>
+                            <Item Key="METADATA">https://login.microsoftonline.com/{tenant}/.well-known/openid-configuration</Item>
+                            <Item Key="authorization_endpoint">https://login.microsoftonline.com/{tenant}/oauth2/token</Item>
+                            <Item Key="response_types">id_token</Item>
+                            <Item Key="response_mode">query</Item>
+                            <Item Key="scope">email openid</Item>
+                            <!-- Policy Engine Clients -->
+                            <Item Key="UsePolicyInRedirectUri">false</Item>
+                            <Item Key="HttpBinding">POST</Item>
+                            <Item Key="client_id">def6339c-d0f1-499f-ae9a-7a8fb3efda15</Item> <!--登録した Proxy IEF アプリのClient ID ★★★★ -->
+                            <Item Key="IdTokenAudience">fae08c41-2a7d-45f1-8f21-64b4f9a78563</Item> <!--登録したIEFアプリの Client ID ★★★★-->
+                        </Metadata>
+                        <InputClaims>
+                            <InputClaim ClaimTypeReferenceId="email" PartnerClaimType="username" Required="true" />
+                            <InputClaim ClaimTypeReferenceId="password" PartnerClaimType="password" Required="true" />
+                            <InputClaim ClaimTypeReferenceId="grant_type" DefaultValue="password" />
+                            <InputClaim ClaimTypeReferenceId="scope" DefaultValue="openid" />
+                            <InputClaim ClaimTypeReferenceId="nca" PartnerClaimType="nca" DefaultValue="1" />
+
+                            <InputClaim ClaimTypeReferenceId="client_id" DefaultValue="def6339c-d0f1-499f-ae9a-7a8fb3efda15" />
+                            <InputClaim ClaimTypeReferenceId="resource_id" PartnerClaimType="resource" DefaultValue="fae08c41-2a7d-45f1-8f21-64b4f9a78563" />
+                        </InputClaims>
+                        <OutputClaims>
+                            <OutputClaim ClaimTypeReferenceId="objectId" PartnerClaimType="oid" />
+                        </OutputClaims>
+                    </TechnicalProfile>
+
+                    <!-- SUSI email ログインの SelfAssert 技術プロファイル-->
+                    <TechnicalProfile Id="UserSignInCollector">
+                        <DisplayName>Local Account Signin</DisplayName>
+                        <Protocol Name="Proprietary"
+                            Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                        <Metadata>
+                            <Item Key="setting.operatingMode">Email</Item>
+                            <Item Key="SignUpTarget">AccountTypeInputCollectorClaimsExchange</Item>
+                        </Metadata>
+                        <DisplayClaims>
+                            <DisplayClaim ClaimTypeReferenceId="email" Required="true" />
+                            <DisplayClaim ClaimTypeReferenceId="password" Required="true" />
+                        </DisplayClaims>
+                        <OutputClaims>
+                            <OutputClaim ClaimTypeReferenceId="email" />
+                            <OutputClaim ClaimTypeReferenceId="password"  />
+                            <OutputClaim ClaimTypeReferenceId="objectId" />
+                        </OutputClaims>
+                        <ValidationTechnicalProfiles>
+                            <ValidationTechnicalProfile ReferenceId="SignInUser" />
+                        </ValidationTechnicalProfiles>
+                    </TechnicalProfile>
+
+                </TechnicalProfiles>
+            </ClaimsProvider>
+        <!--</ClaimsProviders>-->
+        </ClaimsProviders>
+
+        <UserJourneys>
+            <!-- User Journeys Here-->
+            <UserJourney Id="HelloWorldJourney">
+
+        <!--OIDC/OAuth 追加後のステップ-->
+            <OrchestrationSteps>
+                <!-- 
+                    オーケストレーション手順 1 - サインイン ページが表示されるため、ユーザーはサインインするか、[今すぐサインアップ] リンクを選択することができます。
+                     UserSignInCollector セルフアサート技術プロファイルがサインイン フォームの表示に使用するコンテンツ定義を指定していることに注意してください。
+                -->
+                <OrchestrationStep Order="1" Type="CombinedSignInAndSignUp" ContentDefinitionReferenceId="SignupOrSigninContentDefinition">
+                    <ClaimsProviderSelections>
+                        <ClaimsProviderSelection ValidationClaimsExchangeId="LocalAccountSigninEmailExchange" />
+                    </ClaimsProviderSelections>
+                    <ClaimsExchanges>
+                        <ClaimsExchange Id="LocalAccountSigninEmailExchange" TechnicalProfileReferenceId="UserSignInCollector" />
+                    </ClaimsExchanges>
+                </OrchestrationStep>
+
+                <!-- 
+                    オーケストレーション 手順 2 - この手順は、ユーザーがサインアップする (objectId が存在しない) 場合に実行されるため、
+                    AccountTypeInputCollector セルフアサート技術プロファイルを呼び出して、アカウントの種類の選択フォームを表示します。
+                --> 
+
+                <OrchestrationStep Order="2" Type="ClaimsExchange">
+                    <Preconditions>
+                        <Precondition Type="ClaimsExist" ExecuteActionsIf="true">
+                            <Value>objectId</Value>
+                            <Action>SkipThisOrchestrationStep</Action>
+                        </Precondition>
+                    </Preconditions>
+                    <ClaimsExchanges>
+                        <ClaimsExchange Id="AccountTypeInputCollectorClaimsExchange" TechnicalProfileReferenceId="AccountTypeInputCollector"/>
+                    </ClaimsExchanges>
+                </OrchestrationStep>
+                <!-- 
+                    オーケストレーション 手順 3 - この手順は、ユーザーがサインアップし (objectId が存在しない)、ユーザーが会社の accountType を選択しない場合に
+                    実行されます。 そのため、AccessCodeInputCollector セルフアサート技術プロファイルを呼び出して、accessCode を入力するようにユーザーに求めます。
+                -->
+                <OrchestrationStep Order="3" Type="ClaimsExchange">
+                    <Preconditions>
+                        <Precondition Type="ClaimsExist" ExecuteActionsIf="true">
+                            <Value>objectId</Value>
+                            <Action>SkipThisOrchestrationStep</Action>
+                        </Precondition>
+                        <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
+                        <Value>accountType</Value>
+                        <Value>company</Value>
+                        <Action>SkipThisOrchestrationStep</Action>
+                        </Precondition>
+                    </Preconditions>
+                    <ClaimsExchanges>
+                        <ClaimsExchange Id="GetAccessCodeClaimsExchange" TechnicalProfileReferenceId="AccessCodeInputCollector" />
+                    </ClaimsExchanges>
+                </OrchestrationStep>
+ 
+                <!-- 企業を選択した際のEメールアドレス入力が会社のアドレスかをチェックする -->
+
+                <OrchestrationStep Order="4" Type="ClaimsExchange">
+                    <Preconditions>
+                        <Precondition Type="ClaimsExist" ExecuteActionsIf="true">
+                            <Value>objectId</Value>
+                            <Action>SkipThisOrchestrationStep</Action>
+                        </Precondition>
+                        <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
+                            <Value>accountType</Value>
+                            <Value>personal</Value>
+                            <Action>SkipThisOrchestrationStep</Action>
+                        </Precondition>
+                    </Preconditions>
+                    <ClaimsExchanges>
+                        <ClaimsExchange Id="preSignUpWithLogonEmailExchange" TechnicalProfileReferenceId="preUserInformationCollector" />
+                    </ClaimsExchanges>
+                </OrchestrationStep>  
+                
+                <!-- 
+                    オーケストレーション 手順 4 - この手順は、ユーザーがサインアップする (objectId が存在しない) 場合に実行されるため、
+                    UserInformationCollector セルフアサート技術プロファイルを呼び出して、サインアップ フォームを表示します。 
+                    この手順は、ユーザーがサインアップする場合でもサインインする場合でも実行されます。
+               -->
+
+                <OrchestrationStep Order="5" Type="ClaimsExchange">
+                    <Preconditions>
+                        <Precondition Type="ClaimsExist" ExecuteActionsIf="true">
+                            <Value>objectId</Value>
+                            <Action>SkipThisOrchestrationStep</Action>
+                        </Precondition>
+                    </Preconditions>
+                    <ClaimsExchanges>
+                        <ClaimsExchange Id="SignUpWithLogonEmailExchange" TechnicalProfileReferenceId="UserInformationCollector" />
+                    </ClaimsExchanges>
+                </OrchestrationStep>  
+            
+                <!-- 
+                   オーケストレーション 手順 5 - この手順では、Azure AD からアカウント情報を読み取ります (AAD-UserRead Azure AD 技術プロファイルを呼び出します)。
+                   そのため、ユーザーがサインアップする場合でもサインインする場合でも実行されます。
+                -->
+
+                <OrchestrationStep Order="6" Type="ClaimsExchange">
+                    <ClaimsExchanges>
+                    <ClaimsExchange Id="AADUserReaderExchange" TechnicalProfileReferenceId="AAD-UserRead"/>
+                    </ClaimsExchanges>
+                </OrchestrationStep>                
+                
+                <!-- 
+                    オーケストレーション手順 6 - この手順では UserInputMessageClaimGenerator 技術プロファイルを呼び出して、
+                    ユーザーへのあいさつメッセージを組み立てます。
+                -->
+
+                <OrchestrationStep Order="7" Type="ClaimsExchange">
+                    <ClaimsExchanges>
+                    <ClaimsExchange Id="GetMessageClaimsExchange" TechnicalProfileReferenceId="UserInputMessageClaimGenerator"/>
+                    </ClaimsExchanges>          
+                </OrchestrationStep>                
+                
+                <!-- 
+                    ポリシーの実行の最後に JWT トークンをアセンブルして返します。
+                -->
+                <OrchestrationStep Order="8" Type="SendClaims" CpimIssuerTechnicalProfileReferenceId="JwtIssuer" />
+            </OrchestrationSteps>        
+        </UserJourney>
+        </UserJourneys>
+
+        <RelyingParty>
+            <!-- 
+                Relying Party Here that's your policy’s entry point
+                Specify the User Journey to execute 
+                Specify the claims to include in the token that is returned when the policy runs
+            -->
+        <DefaultUserJourney ReferenceId="HelloWorldJourney"/>
+        <TechnicalProfile Id="HelloWorldPolicyProfile">
+            <DisplayName>Hello World Policy Profile</DisplayName>
+            <Protocol Name="OpenIdConnect" />
+            <OutputClaims>
+  <!--          
+            <OutputClaim ClaimTypeReferenceId="objectId" PartnerClaimType="sub" DefaultValue="abcd-1234-efgh-5678-ijkl-etc."/>
+            <OutputClaim ClaimTypeReferenceId="message" DefaultValue="Hello World!"/>
+-->
+            <OutputClaim ClaimTypeReferenceId="objectId" PartnerClaimType="sub"/>
+            <OutputClaim ClaimTypeReferenceId="displayName"/>
+            <OutputClaim ClaimTypeReferenceId="message"/>
+            <OutputClaim ClaimTypeReferenceId="accountType" />
+            <OutputClaim ClaimTypeReferenceId="email" />
+
+            </OutputClaims>
+            <SubjectNamingInfo ClaimType="sub" />
+        </TechnicalProfile>
+
+        </RelyingParty>
+    </TrustFrameworkPolicy>
