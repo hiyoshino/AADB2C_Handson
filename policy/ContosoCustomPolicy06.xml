@@ -756,8 +756,8 @@
                             <!-- Policy Engine Clients -->
                             <Item Key="UsePolicyInRedirectUri">false</Item>
                             <Item Key="HttpBinding">POST</Item>
-                            <Item Key="client_id">def6339c-d0f1-499f-ae9a-7a8fb3efda15</Item> <!--登録した Proxy IEF アプリのClient ID ★★★★ -->
-                            <Item Key="IdTokenAudience">fae08c41-2a7d-45f1-8f21-64b4f9a78563</Item> <!--登録したIEFアプリの Client ID ★★★★-->
+                            <Item Key="client_id">def6339c-XXXXX-XXXX-XXXX-7a8fb3efda15</Item> <!--登録した Proxy IEF アプリの Client ID ★★★★ -->
+                            <Item Key="IdTokenAudience">fae08c41-XXXX-XXXX-8f21-64b4f9a78563</Item> <!--登録したIEFアプリの Client ID ★★★★-->
                         </Metadata>
                         <InputClaims>
                             <InputClaim ClaimTypeReferenceId="email" PartnerClaimType="username" Required="true" />
@@ -766,8 +766,8 @@
                             <InputClaim ClaimTypeReferenceId="scope" DefaultValue="openid" />
                             <InputClaim ClaimTypeReferenceId="nca" PartnerClaimType="nca" DefaultValue="1" />
 
-                            <InputClaim ClaimTypeReferenceId="client_id" DefaultValue="def6339c-d0f1-499f-ae9a-7a8fb3efda15" />
-                            <InputClaim ClaimTypeReferenceId="resource_id" PartnerClaimType="resource" DefaultValue="fae08c41-2a7d-45f1-8f21-64b4f9a78563" />
+                            <InputClaim ClaimTypeReferenceId="client_id" DefaultValue="def6339c-XXXXX-XXXX-XXXX-7a8fb3efda15" /> <!--登録した Proxy IEF アプリの Client ID ★★★★ -->
+                            <InputClaim ClaimTypeReferenceId="resource_id" PartnerClaimType="resource" DefaultValue="fae08c41-XXXX-XXXX-XXXX-64b4f9a78563" /> <!--登録したIEFアプリの Client ID ★★★★-->
                         </InputClaims>
                         <OutputClaims>
                             <OutputClaim ClaimTypeReferenceId="objectId" PartnerClaimType="oid" />
