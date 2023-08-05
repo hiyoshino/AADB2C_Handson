@@ -27,7 +27,7 @@ Azure Active Directory B2C (Azure AD B2C) カスタム ポリシーを使用す�
 
 特定の入力に対してユーザーが入力できるすべての可能な値がわかっている場合は、ユーザーが選択する必要がある値の有限セットを指定できます。 この目的のために DropdownSinglSelect、CheckboxMultiSelect、RadioSingleSelect の UserInputType を使用できます。 この記事では、入力の種類として RadioSingleSelect を使用します。
 
-1. VS COde でファイル `ContosoCustomPolicy.XML`を開きます。 
+1. VS Code でファイル `ContosoCustomPolicy.XML`を開きます。 
 
 1. `ContosoCustomPolicy.XML` ファイルの `ClaimsSchema` 要素で、次の要求タイプを宣言します。
   
@@ -284,7 +284,7 @@ Predicates によって、要求タイプに対してチェックを行う検証
     ``` 
 
 > [!NOTE]    
-> セキュリティ上の理由から、ポリシーによって生成されたトークンにユーザーのパスワードを要求として追加することはしません。 そのため、証明書利用者要素には password 要求を追加しません。
+> セキュリティ上の理由から、ポリシーによって生成されたトークンにユーザーのパスワードを要求として追加することはしません。 そのため、Relying Party 要素には password 要求を追加しません。
 
 ## Step 4 - パスワードを検証し、パスワードを確認する
 
