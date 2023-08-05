@@ -112,7 +112,7 @@
         </ClaimsProvider>
     ```
     
-    JWT トークン発行者を宣言しました。 手順 1 で別の名前を使用して署名キーと暗号化キーを構成した場合は、CryptographicKeys セクションで StorageReferenceId に正しい値を使用していることを確認します。
+    JWT トークン発行者を宣言しました。 Step 1 で別の名前を使用して署名キーと暗号化キーを構成した場合は、CryptographicKeys セクションで StorageReferenceId に正しい値を使用していることを確認します。
 
 5. ContosoCustomPolicy.XML ファイルの UserJourneys セクションで、次のコードを追加します。:
 
