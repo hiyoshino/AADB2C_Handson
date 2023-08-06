@@ -161,7 +161,7 @@ Azure AD B2C では、ローカル アカウントでのユーザーのサイン
 
 また、*SignInUser* OpenID Connect 技術プロファイルを `ValidationTechnicalProfile` として追加しました。 そのため、`SignInUser` 技術プロファイルは、ユーザーが [サインイン] ボタンを選択したときに実行されます (Step 5 のスクリーンショットを参照)。
 
-次に会社のアカウントを選択した際のメールアドレスが正しく入力されているかをチェックする技術プロファイルを追加します。`CheckCompanyDomain` 技術プロファイルの直前に挿入します。
+次に会社のアカウントを選択した際のメールアドレスが正しく入力されているかをチェックする `preUserInformationCollector` 技術プロファイルを追加します。`CheckCompanyDomain` 技術プロファイルの直前に挿入します。
 
 ```xml
             <TechnicalProfile Id="preUserInformationCollector">
