@@ -78,7 +78,7 @@
 
 ## Step 3 - 技術プロファイルを構成または更新する 
 
-ここで、2 つの新しいセルフアサート技術プロファイルが必要です。1 つはアカウントの種類を収集し、もう 1 つはユーザーからアクセス コードを収集します。 手順 2 で定義したクレームの変換を実行してユーザーのアクセス コードを検証するために、新しいクレームの変換の種類の技術プロファイルも必要です。 別のセルフアサート技術プロファイルでアカウントの種類を収集するため、UserInformationCollector セルフアサート技術プロファイルを更新して、アカウントの種類を収集しないようにする必要があります。
+ここで、2 つの新しいセルフアサート技術プロファイルが必要です。1 つはアカウントの種類を収集し、もう 1 つはユーザーからアクセス コードを収集します。 Step 2 で定義したクレームの変換を実行してユーザーのアクセス コードを検証するために、新しいクレームの変換の種類の技術プロファイルも必要です。 別のセルフアサート技術プロファイルでアカウントの種類を収集するため、UserInformationCollector セルフアサート技術プロファイルを更新して、アカウントの種類を収集しないようにする必要があります。
 
 1. `ClaimsProviders` 要素を見つけ、次のコードを使用して新しいクレーム プロバイダーを追加します。
 
@@ -123,7 +123,7 @@
         <!--</ClaimsProviders>-->
     ```
 
-"AccessCodeInputCollector" と "CheckAccessCodeViaClaimsTransformationChecker" という 2 つの技術プロファイルを構成しました。 "CheckAccessCodeViaClaimsTransformationChecker" 技術プロファイルは、"AccessCodeInputCollector" 技術プロファイル内から検証技術プロファイルとして呼び出します。 "CheckAccessCodeViaClaimsTransformationChecker" は、それ自体の種類がクレームの変換技術プロファイルであり、手順 2 で定義したクレームの変換を実行します。
+"AccessCodeInputCollector" と "CheckAccessCodeViaClaimsTransformationChecker" という 2 つの技術プロファイルを構成しました。 "CheckAccessCodeViaClaimsTransformationChecker" 技術プロファイルは、"AccessCodeInputCollector" 技術プロファイル内から検証技術プロファイルとして呼び出します。 "CheckAccessCodeViaClaimsTransformationChecker" は、それ自体の種類がクレームの変換技術プロファイルであり、Step 2 で定義したクレームの変換を実行します。
 
  "AccessCodeInputCollector" は、ユーザーからアクセス コードを収集するために使用されるセルフアサート技術プロファイルです。 これには、"OnClaimsExistence" に設定された EnabledForUserJourneys 要素が含まれます。 その Metadata 要素には、この技術プロファイルをアクティブにするクレーム ("accountType") とその値 ("personal") が含まれます。
 
@@ -205,5 +205,5 @@
 1. 最初の画面で、[アカウントの種類] に [個人用アカウント] を選択します。
 1. [アクセス コード] に「88888」と入力し、[続行] を選択します。
 1. 必要に応じて残りの詳細を入力し、[続行] を選択します。 ポリシーの実行が完了すると、https://jwt.ms にリダイレクトされ、デコードされた JWT トークンが表示されます。
-1. 手順 5 を繰り返しますが、今度は [アカウントの種類] を選択し、[Contoso Employee Account] (Contoso 従業員アカウント) を選択して、プロンプトに従います。
+1. 手順を繰り返しますが、今度は [アカウントの種類] を選択し、[Contoso Employee Account] (Contoso 従業員アカウント) を選択して、プロンプトに従います。
  
