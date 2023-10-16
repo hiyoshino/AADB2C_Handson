@@ -12,7 +12,7 @@
 
   1. [「Identity Experience Framework アプリケーションの署名および暗号化キーを追加する」](https://learn.microsoft.com/ja-jp/azure/active-directory-b2c/tutorial-create-user-flows?pivots=b2c-custom-policy#add-signing-and-encryption-keys-for-identity-experience-framework-applications)の手順を使用して、署名キーを作成します。
   
-  2. [「Identity Experience Framework アプリケーションの署名および暗号化キーを追加する」](https://learn.microsoft.com/ja-jp/azure/active-directory-b2c/tutorial-create-user-flows?pivots=b2c-custom-policy#add-signing-and-encryption-keys-for-identity-experience-framework-applications)の手順を使用して、暗号化キーを作成します。
+  2. [「ProxyIdentity Experience Framework アプリケーションの署名および暗号化キーを追加する」](https://learn.microsoft.com/ja-jp/azure/active-directory-b2c/tutorial-create-user-flows?pivots=b2c-custom-policy#register-the-proxyidentityexperienceframework-application)の手順を使用して、暗号化キーを作成します。
   
 
 ## Step 2 - カスタム ポリシー ファイルをビルドする
