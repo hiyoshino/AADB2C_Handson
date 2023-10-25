@@ -145,7 +145,7 @@ objectId、displayName、message の各クレームの値を設定するには�
         </ClaimsProvider>
     
     ``` 
-1.objectId、displayName、message の各クレームの値を設定するために、先ほど作成した ClaimsProvider 要素内に次のコードを追加します。
+1. objectId、displayName、message の各クレームの値を設定するために、先ほど作成した ClaimsProvider 要素内に次のコードを追加します。
    
     ```xml
         <!--<ClaimsProvider>-->
