@@ -1,4 +1,4 @@
-# SAzure Active Directory B2C カスタム ポリシーで ドロップダウンリストを表示
+# Azure Active Directory B2C カスタム ポリシーで ドロップダウンリストを表示
 
 Azure Active Directory B2C カスタム ポリシーを使用し、都市を指定するドロップダウンリストをユーザーサインアップ時に選択できるようにする。
 
@@ -9,7 +9,7 @@ Azure Active Directory B2C カスタム ポリシーを使用し、都市を指�
 
 ## Step 1 - クレームを宣言する
 
- *city* を追加のクレームとして宣言します。
+ *city* を追加のクレームとして宣言します。UserInputType に DropdownSingleSelect を指定することで、ユーザーに都市を一覧から選択する画面を表示することが可能です。 SelectByDefault="true" を指定するとデフォルト値として設定します。
 
 1. VS Code で `ContosoCustomPolicy.XML` ファイルを開きます。 
 

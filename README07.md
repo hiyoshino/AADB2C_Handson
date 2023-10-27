@@ -1,5 +1,5 @@
 
-# SAzure Active Directory B2C カスタム ポリシーで REST API を呼び出す
+# Azure Active Directory B2C カスタム ポリシーで REST API を呼び出す
 
 Azure Active Directory B2C (Azure AD B2C) カスタム ポリシーを使用すると、Azure AD B2C の外部で実装されたアプリケーション ロジックと対話できるようになります。これを行うには、エンドポイントに対して HTTP 呼び出しを行います。Azure AD B2C カスタム ポリシーは、この目的のための RESTful 技術プロファイルを提供します。この機能を使用すると、Azure AD B2C カスタム ポリシー内では利用できない機能を実装できます。
 
