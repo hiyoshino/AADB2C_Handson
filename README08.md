@@ -30,7 +30,6 @@ Azure Active Directory B2C カスタム ポリシーを使用し、都市を指�
         </ClaimType>
     ```  
 
-city クレームを宣言しました。UserInputType が DropdownSigleSelect に設定しており、ユーザーはドロップダウンリストから一つの都市を選択する必要があります。
 
 ## Step 2 - 都市情報を収集する技術プロファイルを構成する
 
