@@ -58,13 +58,15 @@ Azure Active Directory B2C (Azure AD B2C) カスタム ポリシーを使用す�
 
 次に示すような POST 要求を実施します。(user-code-coeには入力したアクセスコードに置き換えます。)
 
-    ```http
+```http
+
         POST https://yourapiservice.azurewebsites.net/validate-accesscode  HTTP/1.1
         Host: yourapiservice.azurewebsites.net/validate-accesscode
         Content-Type: application/x-www-form-urlencoded
     
         accessCode=user-code-code
-    ```
+
+```
 
 入力したアクセスコードが `88888` の場合は HTTP 200 OK を返しますが、コードが間違っている場合は、Status 409 とともに以下の JSON メッセージが返信されます。
 
