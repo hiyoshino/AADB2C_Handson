@@ -13,7 +13,7 @@ Azure Active Directory B2C カスタム ポリシーを使用し、都市を指�
 
 1. VS Code で `ContosoCustomPolicy.XML` ファイルを開きます。 
 
-1. 'ClaimsSchema' セクションに、次の 'ClaimType' の宣言を追加します。: 
+1. `ClaimsSchema` セクションに、次の 'ClaimType' の宣言を追加します。: 
 
     ```xml
         <ClaimType Id="city">
