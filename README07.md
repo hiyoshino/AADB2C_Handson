@@ -70,7 +70,8 @@ Azure Active Directory B2C (Azure AD B2C) カスタム ポリシーを使用す�
 
 入力したアクセスコードが `88888` の場合は HTTP 200 OK を返しますが、コードが間違っている場合は、Status 409 とともに以下の JSON メッセージが返信されます。
 
-    ```json
+```json
+
         {
             "version": "1.0",
             "status": 409,
@@ -80,7 +81,8 @@ Azure Active Directory B2C (Azure AD B2C) カスタム ポリシーを使用す�
             "developerMessage": "The provided code 54321 does not match the expected code for user.",
             "moreInfo": "https://docs.microsoft.com/en-us/azure/active-directory-b2c/string-transformations"
         }
-    ```
+
+```
 
 
 
