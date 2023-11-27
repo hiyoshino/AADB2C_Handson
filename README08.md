@@ -33,9 +33,10 @@ Azure Active Directory B2C カスタム ポリシーを使用し、都市を指�
 
 ## Step 2 - 都市情報を収集する技術プロファイルを構成する
 
-都市を選択するための画面を表示する技術プロファイルは、ClaimsProvider 要素内で以下のように宣言します。:
+都市を選択するための画面を表示する技術プロファイルは、ClaimsProvider 要素内で以下のように宣言します。
 
-    ```xml
+```xml
+
         <ClaimsProvider>
         <DisplayName>Technical Profiles to collect user's city </DisplayName>
         <TechnicalProfiles>
@@ -54,7 +55,7 @@ Azure Active Directory B2C カスタム ポリシーを使用し、都市を指�
             </TechnicalProfile>
         </TechnicalProfiles>
         </ClaimsProvider>
-    ```
+```
 
 ## Step 3 - UserJourney に都市選択を追加する
 
