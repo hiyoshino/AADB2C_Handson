@@ -62,7 +62,8 @@ Azure Active Directory B2C カスタム ポリシーを使用し、都市を指�
 都市選択の入力処理を UserJourney に追加します。
 HelloWorldJourney の UserJourney を見つけ出し、OrchestrationStep Order="3" の後に、 Order="4" として以下の xml を追加します。追加後、既存の Order=4 以降 Orchestration Step の Order の数を一つ増やします。最終的に Order は 9 になります。
 
-    ```xml
+```xml
+
         <OrchestrationStep Order="4" Type="ClaimsExchange">
             <Preconditions>
                 <Precondition Type="ClaimsExist" ExecuteActionsIf="true">
@@ -79,17 +80,18 @@ HelloWorldJourney の UserJourney を見つけ出し、OrchestrationStep Order="
                 <ClaimsExchange Id="GetCityClaimsExchange" TechnicalProfileReferenceId="UsersCityCollector" />
             </ClaimsExchanges>
         </OrchestrationStep>
-    ```
+```
 
 ## Step 4 - RelyingParty に OutputClaim に city を追加する
 
 選択した都市をアプリケーションに Claim を JWTトークンに含めてアプリケーションに連携します。
 RelayingParty ポリシーの OutputoClaims 内に以下のクレームを追加します。
 
-    ```xml
-        <OutputClaim ClaimTypeReferenceId="city" />
+```xml
 
-    ```
+<OutputClaim ClaimTypeReferenceId="city" />
+
+```
 
 ### Step 5 - カスタム ポリシー ファイルをアップロードする
 
